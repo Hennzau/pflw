@@ -16,25 +16,9 @@ jobs:
   ruff:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
+      - uses: ./github/actions/setup-project
         with:
-          enable-cache: true
-          cache-dependency-glob: "uv.lock"
-
-      - name: Set up Python
-        run: uv python install
-
-      - name: Install maturin
-        run: uv tool install maturin
-
-      - name: Install dependencies
-        run: uv sync --no-install-project --managed-python
-
-      - name: Install wheel
-        run: uv run --no-sync maturin develop --uv
+          dev: false
 
       - name: Install ruff
         run: uv tool install ruff
@@ -62,25 +46,7 @@ jobs:
           - runner: macos-14
             target: aarch64
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
-          cache-dependency-glob: "uv.lock"
-
-      - name: Set up Python
-        run: uv python install
-
-      - name: Install maturin
-        run: uv tool install maturin
-
-      - name: Install dependencies
-        run: uv sync --no-install-project --managed-python
-
-      - name: Install wheel
-        run: uv run --no-sync maturin develop --uv
+      - uses: ./github/actions/setup-project
 
       - name: Tests
         run: uv run --no-sync pytest tests

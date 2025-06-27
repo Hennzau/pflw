@@ -1,0 +1,40 @@
+name: Setup Python Project
+description: Common setup for Python environment with uv, maturin, and dependencies
+
+inputs:
+  dev:
+    description: "Include dev dependencies"
+    required: false
+    default: "true"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+
+    - name: Set up Python
+      run: uv python install
+      shell: bash
+
+    - name: Install dependencies
+      run: |
+        if [[ "${{ inputs.dev }}" == "false" ]]; then
+          uv sync --no-install-project --managed-python --no-dev
+        else
+          uv sync --no-install-project --managed-python
+        fi
+      shell: bash
+
+    - name: Install maturin
+      run: uv tool install maturin
+      shell: bash
+
+    - name: Install wheel
+      run: uv run --no-sync maturin develop --uv
+      shell: bash
