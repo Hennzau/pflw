@@ -18,3 +18,6 @@ run: build
 
 test: build
     uv run --no-sync pytest tests
+
+format:
+    uv run --no-sync ruff format
