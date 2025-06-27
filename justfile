@@ -15,3 +15,6 @@ build: sync
 
 run: build
     uv run --no-sync pydf
+
+test: build
+    uv run --no-sync pytest tests

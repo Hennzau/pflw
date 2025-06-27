@@ -1,4 +1,4 @@
-name: TEST
+name: CI
 
 on:
   push:
@@ -24,11 +24,22 @@ jobs:
             target: aarch64
           - runner: ubuntu-24.04
             target: armv7
+
+          - runner: windows-latest
+            target: x64
+
+          - runner: macos-13
+            target: x86_64
+          - runner: macos-14
+            target: aarch64
     steps:
       - uses: actions/checkout@v4
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
       - name: Set up Python
         run: uv python install
@@ -39,11 +50,8 @@ jobs:
       - name: Install dependencies
         run: uv sync --no-install-project --managed-python
 
-      - name: Build wheels
-        run: uv run maturin build --release --out dist
+      - name: Install wheel
+        run: uv run --no-sync maturin develop --uv
 
-      - name: Upload wheels
-        uses: actions/upload-artifact@v4
-        with:
-          name: wheels-linux-${{ matrix.platform.target }}
-          path: dist
+      - name: Tests
+        run: uv run --no-sync pytest tests
