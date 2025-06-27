@@ -1,7 +1,8 @@
 set quiet
 
 clean:
-    uv venv
+    rm -rf .venv
+    cargo clean
 
 sync:
     uv sync --no-install-project
