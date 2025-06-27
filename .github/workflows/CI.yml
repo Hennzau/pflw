@@ -11,24 +11,6 @@ permissions:
   contents: read
 
 jobs:
-  ruff:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: ./.github/actions/setup-project
-        with:
-          dev: false
-
-      - name: Install wheel
-        run: uv run --no-sync maturin develop --uv
-
-      - name: Install ruff
-        run: uv tool install ruff
-
-      - name: Check
-        run: uv run --no-sync ruff check
-
   tests:
     runs-on: ${{ matrix.platform.runner }}
     strategy:
@@ -54,6 +36,12 @@ jobs:
 
       - name: Install wheel
         run: uv run --no-sync maturin develop
+
+      - name: Install ruff
+        run: uv tool install ruff
+
+      - name: Check
+        run: uv run --no-sync ruff check
 
       - name: Tests
         run: uv run --no-sync pytest tests
