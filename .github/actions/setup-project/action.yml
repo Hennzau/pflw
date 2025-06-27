@@ -32,7 +32,3 @@ runs:
     - name: Install maturin
       run: uv tool install maturin
       shell: bash
-
-    - name: Install wheel
-      run: uv run --no-sync maturin develop --uv
-      shell: bash

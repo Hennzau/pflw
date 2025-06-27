@@ -17,5 +17,9 @@ dependencies = []
 [tool.maturin]
 features = ["pyo3/extension-module"]
 
+[tool.pyright]
+venv = ".venv"
+venvPath = "."
+
 [dependency-groups]
 dev = ["pytest>=8.3.5"]

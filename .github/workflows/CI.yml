@@ -17,9 +17,14 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+
       - uses: ./.github/actions/setup-project
         with:
           dev: false
+
+      - name: Install wheel
+        run: uv run --no-sync maturin develop --uv
+        shell: bash
 
       - name: Install ruff
         run: uv tool install ruff
@@ -49,6 +54,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-project
+
+      - name: Install wheel
+        run: uv run --no-sync maturin develop
+        shell: bash
 
       - name: Tests
         run: uv run --no-sync pytest tests
