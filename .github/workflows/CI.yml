@@ -16,7 +16,7 @@ jobs:
   ruff:
     runs-on: ubuntu-24.04
     steps:
-      - uses: ./github/actions/setup-project
+      - uses: ./.github/actions/setup-project
         with:
           dev: false
 
@@ -46,7 +46,7 @@ jobs:
           - runner: macos-14
             target: aarch64
     steps:
-      - uses: ./github/actions/setup-project
+      - uses: ./.github/actions/setup-project
 
       - name: Tests
         run: uv run --no-sync pytest tests
