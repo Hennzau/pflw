@@ -15,8 +15,3 @@ scripts = { pydf = "pydf:main" }
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
-
-[tool.uv.workspace]
-members = [
-    "examples/simple",
-]

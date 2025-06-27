@@ -1,3 +1,5 @@
+set quiet
+
 clean:
     uv venv
 
@@ -6,7 +8,7 @@ sync:
 
 init: sync
 
-build:
+build: sync
     maturin develop --uv
 
 run: build
