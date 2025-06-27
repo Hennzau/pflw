@@ -1,36 +1,15 @@
-name: CI
+name: release
 
 on:
   push:
-    branches:
-      - main
     tags:
       - "*"
-  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  ruff:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: ./.github/actions/setup-project
-        with:
-          dev: false
-
-      - name: Install wheel
-        run: uv run --no-sync maturin develop --uv
-
-      - name: Install ruff
-        run: uv tool install ruff
-
-      - name: Check
-        run: uv run --no-sync ruff check
-
   tests:
     runs-on: ${{ matrix.platform.runner }}
     strategy:
@@ -54,8 +33,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-project
 
-      - name: Install wheel
-        run: uv run --no-sync maturin develop
+      - name: Build wheel
+        run: uv run --no-sync maturin build --release --out dists
 
-      - name: Tests
-        run: uv run --no-sync pytest tests
+      - name: Upload wheel
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheel-${{ matrix.platform.target }}
+          path: dist
