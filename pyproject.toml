@@ -12,6 +12,7 @@ classifiers = [
 ]
 dynamic = ["version"]
 scripts = { pydf = "pydf:main" }
+dependencies = []
 
 [tool.maturin]
 features = ["pyo3/extension-module"]

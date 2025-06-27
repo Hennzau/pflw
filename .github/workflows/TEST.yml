@@ -37,10 +37,10 @@ jobs:
         run: uv tool install maturin
 
       - name: Install dependencies
-        run: uv sync --no-install-project
+        run: uv sync --no-install-project --managed-python
 
       - name: Build wheels
-        run: uv run maturin build --release --out dist --uv
+        run: uv run maturin build --release --out dist
 
       - name: Upload wheels
         uses: actions/upload-artifact@v4

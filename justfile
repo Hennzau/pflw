@@ -5,9 +5,10 @@ clean:
     cargo clean
 
 sync:
-    uv sync --no-install-project
+    uv sync --no-install-project --managed-python --link-mode symlink
 
-init: sync
+init:
+    uv python install
 
 build: sync
     maturin develop --uv
