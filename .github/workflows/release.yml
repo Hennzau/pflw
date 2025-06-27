@@ -34,7 +34,7 @@ jobs:
       - uses: ./.github/actions/setup-project
 
       - name: Build wheel
-        run: uv run --no-sync maturin build --release --out dists
+        run: uv run --no-sync maturin build --release --out dist
 
       - name: Upload wheel
         uses: actions/upload-artifact@v4
