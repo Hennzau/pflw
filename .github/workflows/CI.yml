@@ -24,6 +24,18 @@ jobs:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
 
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install maturin
+        run: uv tool install maturin
+
+      - name: Install dependencies
+        run: uv sync --no-install-project --managed-python
+
+      - name: Install wheel
+        run: uv run --no-sync maturin develop --uv
+
       - name: Install ruff
         run: uv tool install ruff
 
