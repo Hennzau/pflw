@@ -8,7 +8,7 @@ fn main() {
 
 /// A Python module implemented in Rust.
 #[pymodule(gil_used = false)]
-fn pydf(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn pflw(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(main, m)?)?;
     Ok(())
 }

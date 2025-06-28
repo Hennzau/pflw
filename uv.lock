@@ -39,7 +39,7 @@ wheels = [
 ]
 
 [[package]]
-name = "pydf"
+name = "pflw"
 source = { editable = "." }
 
 [package.dev-dependencies]

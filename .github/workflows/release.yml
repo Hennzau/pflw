@@ -52,6 +52,10 @@ jobs:
       - name: Build wheel
         run: uv run --no-sync maturin build --release --out dist
 
+      - name: sdist
+        if: matrix.platform.runner == 'ubuntu-24.04' && matrix.platform.target == 'x86_64'
+        run: uv run --no-sync maturin sdist --out dist
+
       - name: Upload wheel
         uses: actions/upload-artifact@v4
         with:

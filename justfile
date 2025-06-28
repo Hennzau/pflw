@@ -1,7 +1,7 @@
 set quiet
 
 clean:
-    rm -rf .venv
+    rm -rf .venv .pytest_cache .ropeproject .ruff_cache dist
     cargo clean
 
 init:
@@ -20,10 +20,10 @@ build: sync
     uv run --no-sync maturin develop
 
 run: format build
-    uv run --no-sync pydf
+    uv run --no-sync pflw
 
 jrun:
-    uv run --no-sync pydf
+    uv run --no-sync pflw
 
 test: format build
     uv run --no-sync pytest tests
