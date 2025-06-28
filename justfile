@@ -10,6 +10,9 @@ init:
 sync:
     uv sync --no-install-project --managed-python --link-mode symlink
 
+check-gil:
+    uv run --no-sync python -c "import sysconfig; print(sysconfig.get_config_var('Py_GIL_DISABLED'))"
+
 format:
     uv run --no-sync ruff format
 
@@ -18,6 +21,9 @@ check:
 
 build: sync
     uv run --no-sync maturin develop
+
+release:
+    uv run --no-sync maturin build --release --out dist
 
 run: format build
     uv run --no-sync pflw
