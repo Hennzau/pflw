@@ -2,6 +2,8 @@ name: release
 
 on:
   push:
+    branches:
+      - main
     tags:
       - "*"
   workflow_dispatch:
@@ -31,7 +33,21 @@ jobs:
             target: aarch64
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-project
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install maturin
+        run: uv tool install maturin
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Set up venv
+        run: uv venv --managed-python
 
       - name: Build wheel
         run: uv run --no-sync maturin build --release --out dist
