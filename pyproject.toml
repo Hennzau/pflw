@@ -13,6 +13,7 @@ classifiers = [
 dynamic = ["version"]
 scripts = { pflw = "pflw:main" }
 dependencies = []
+description = "Python DataFlow (pflw) - A Python library for data processing and transformation"
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
