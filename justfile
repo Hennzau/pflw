@@ -31,6 +31,9 @@ run: format build
 jrun:
     uv run --no-sync pflw
 
+basic: format build
+    uv run --no-sync examples/basic.py
+
 test: format build
     uv run --no-sync pytest tests
 
