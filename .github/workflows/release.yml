@@ -56,8 +56,12 @@ jobs:
         if: matrix.platform.runner == 'ubuntu-24.04' && matrix.platform.target == 'x86_64'
         run: uv run --no-sync maturin sdist --out dist
 
-      - name: Upload wheel
-        uses: actions/upload-artifact@v4
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v2
         with:
-          name: wheel-${{ matrix.platform.runner }}-${{ matrix.platform.target }}
-          path: dist
+          subject-path: "dist/*"
+
+      - name: Upload wheel
+        env:
+          MATURIN_PYPI_TOKEN: ${{ secrets.MATURIN_PYPI_TOKEN }}
+        run: uv run --no-sync maturin upload --non-interactive --skip-existing dist/*
