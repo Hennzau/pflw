@@ -35,5 +35,8 @@ release: install-maturin install-python setup
 sdist: install-maturin install-python setup
     uv run --no-sync maturin sdist --out dist
 
-upload: install-maturin
+upload: install-maturin setup
     uv run --no-sync maturin upload --non-interactive --skip-existing dist/*
+
+format: install-ruff setup
+    uv run --no-sync ruff format

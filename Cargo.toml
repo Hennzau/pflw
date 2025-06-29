@@ -16,6 +16,9 @@ license = "Apache-2.0"
 repository = "https://github.com/Hennzau/pflw"
 version = "0.1.0"
 
+[workspace.dependencies]
+pyo3 = { version = "0.25.0", features = ["extension-module"] }
+
 [package]
 name = "pflw"
 authors.workspace = true
@@ -37,4 +40,4 @@ name = "pflw"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.25.0", features = ["extension-module"] }
+pyo3 = { workspace = true }
