@@ -35,30 +35,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
+      - uses: extractions/setup-just@v3
+      - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
 
-      - name: Install maturin
-        run: uv tool install maturin
+      - name: Install tools
+        run: just install-tools
 
-      - name: Install ruff
-        run: uv tool install ruff
-
-      - name: Set up Python
-        run: uv python install
-
-      - name: Set up venv and install dependencies
-        run: uv sync --no-install-project --managed-python
+      - name: Set up venv
+        run: |
+          just setup
+          echo "GIL is disabled: $(just check-gil)"
 
       - name: Install wheel
-        run: uv run --no-sync maturin develop
+        run: just install-wheel
 
       - name: Check
-        run: uv run --no-sync ruff check
+        run: just check
 
       - name: Tests
-        run: uv run --no-sync pytest tests
+        run: just tests

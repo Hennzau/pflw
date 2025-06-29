@@ -34,28 +34,26 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
+      - uses: extractions/setup-just@v3
+      - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
 
-      - name: Install maturin
-        run: uv tool install maturin
-
-      - name: Set up Python
-        run: uv python install
+      - name: Install tools
+        run: |
+          just install-maturin
+          just install-python
 
       - name: Set up venv
-        run: uv venv --managed-python
+        run: just setup
 
       - name: Build wheel
-        run: uv run --no-sync maturin build --release --out dist
+        run: just release
 
-      - name: sdist
+      - name: Source distribution
         if: matrix.platform.runner == 'ubuntu-24.04' && matrix.platform.target == 'x86_64'
-        run: uv run --no-sync maturin sdist --out dist
+        run: just sdist
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v2
@@ -65,4 +63,4 @@ jobs:
       - name: Upload wheel
         env:
           MATURIN_PYPI_TOKEN: ${{ secrets.MATURIN_PYPI_TOKEN }}
-        run: uv run --no-sync maturin upload --non-interactive --skip-existing dist/*
+        run: just upload

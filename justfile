@@ -2,40 +2,38 @@ set quiet
 
 clean:
     rm -rf .venv .pytest_cache .ropeproject .ruff_cache dist
-    cargo clean
 
-init:
+install-maturin:
+    uv tool install maturin
+
+install-ruff:
+    uv tool install ruff
+
+install-python:
     uv python install
 
-sync:
+install-tools: install-maturin install-ruff install-python
+
+setup: install-python
     uv sync --no-install-project --managed-python --link-mode symlink
 
-check-gil:
+check-gil: setup
     uv run --no-sync python -c "import sysconfig; print(sysconfig.get_config_var('Py_GIL_DISABLED'))"
 
-format:
-    uv run --no-sync ruff format
-
-check:
-    uv run --no-sync ruff check
-
-build: sync
+install-wheel: install-maturin install-python setup
     uv run --no-sync maturin develop
 
-release:
+check: install-ruff install-wheel
+    uv run --no-sync ruff check
+
+tests: install-wheel
+    uv run --no-sync pytest tests
+
+release: install-maturin install-python setup
     uv run --no-sync maturin build --release --out dist
 
-run: format build
-    uv run --no-sync pflw
+sdist: install-maturin install-python setup
+    uv run --no-sync maturin sdist --out dist
 
-jrun:
-    uv run --no-sync pflw
-
-basic: format build
-    uv run --no-sync examples/basic.py
-
-test: format build
-    uv run --no-sync pytest tests
-
-jtest:
-    uv run --no-sync pytest tests
+upload: install-maturin
+    uv run --no-sync maturin upload --non-interactive --skip-existing dist/*
